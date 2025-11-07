@@ -1,5 +1,7 @@
 # Nested Menu Drawer
 
+Ajay K Saraswat
+
 A fully functional, accessible, and animated nested menu drawer component for React. Built with mobile-first design principles, featuring smooth animations, drag-to-close functionality, and comprehensive keyboard accessibility.
 
 ## Features
@@ -11,7 +13,7 @@ A fully functional, accessible, and animated nested menu drawer component for Re
 ✅ **Screen Reader Support** - ARIA attributes and semantic HTML  
 ✅ **Mobile-First** - Optimized for touch devices with proper spacing  
 ✅ **Responsive** - Adapts to different screen sizes  
-✅ **Clean Code** - Beginner-friendly, well-documented codebase  
+✅ **Clean Code** - Beginner-friendly, well-documented codebase
 
 ## Installation
 
@@ -27,9 +29,9 @@ npm run dev
 ### Basic Example
 
 ```jsx
-import { useState } from 'react';
-import { MenuDrawer, MenuButton } from './components';
-import { sampleMenuData } from './data/menuData';
+import { useState } from "react";
+import { MenuDrawer, MenuButton } from "./components";
+import { sampleMenuData } from "./data/menuData";
 
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -40,7 +42,7 @@ function App() {
         isOpen={isMenuOpen}
         onClick={() => setIsMenuOpen(!isMenuOpen)}
       />
-      
+
       <MenuDrawer
         isOpen={isMenuOpen}
         onClose={() => setIsMenuOpen(false)}
@@ -73,38 +75,38 @@ The menu data should follow this structure:
 
 ```javascript
 const menuData = {
-  id: 'root',
-  label: 'Main Menu',
+  id: "root",
+  label: "Main Menu",
   children: [
     {
-      id: 'home',
-      label: 'Home',
+      id: "home",
+      label: "Home",
       children: [
         {
-          id: 'home-dashboard',
-          label: 'Dashboard',
-          children: [] // No children = leaf node
-        }
-      ]
+          id: "home-dashboard",
+          label: "Dashboard",
+          children: [], // No children = leaf node
+        },
+      ],
     },
     {
-      id: 'products',
-      label: 'Products',
+      id: "products",
+      label: "Products",
       children: [
         {
-          id: 'products-electronics',
-          label: 'Electronics',
+          id: "products-electronics",
+          label: "Electronics",
           children: [
             {
-              id: 'products-electronics-phones',
-              label: 'Phones',
-              children: []
-            }
-          ]
-        }
-      ]
-    }
-  ]
+              id: "products-electronics-phones",
+              label: "Phones",
+              children: [],
+            },
+          ],
+        },
+      ],
+    },
+  ],
 };
 ```
 
@@ -115,6 +117,7 @@ const menuData = {
 Main drawer component that handles all navigation and drag functionality.
 
 **Props:**
+
 - `isOpen` (boolean) - Controls drawer visibility
 - `onClose` (function) - Callback when drawer should close
 - `menuData` (object) - Root menu data object
@@ -124,6 +127,7 @@ Main drawer component that handles all navigation and drag functionality.
 Button component to open/close the drawer.
 
 **Props:**
+
 - `isOpen` (boolean) - Current open state
 - `onClick` (function) - Click handler
 - `ariaLabel` (string, optional) - Custom aria label
@@ -190,6 +194,7 @@ const threshold = drawerHeight * 0.3; // Change 0.3 to your preferred value
 ### Screen Readers
 
 The component includes:
+
 - Proper ARIA labels and roles
 - Semantic HTML structure
 - Focus management
@@ -247,20 +252,3 @@ npm run dev
 ```bash
 npm run build
 ```
-
-### Preview Production Build
-
-```bash
-npm run preview
-```
-
-## License
-
-This project is open source and available for use.
-
-## Notes
-
-- The component is designed for mobile-first use but works on desktop too
-- Drag functionality works with both touch and mouse events
-- The drawer automatically locks body scroll when open
-- Menu history is reset when the drawer closes
