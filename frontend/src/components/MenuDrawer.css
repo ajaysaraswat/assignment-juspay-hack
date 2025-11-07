@@ -1,0 +1,100 @@
+/* Backdrop */
+.menu-drawer-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 998;
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Drawer Container */
+.menu-drawer {
+  position: fixed;
+  bottom: 0;
+  left: 0.75rem;
+  right: 0.75rem;
+  height: 85vh;
+  max-height: 600px;
+  background: #ffffff;
+  border-radius: 24px 24px 0 0;
+  z-index: 999;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.15);
+  transform: translateY(100%);
+  transition: transform 0.4s cubic-bezier(0.32, 0.72, 0, 1), opacity 0.3s ease;
+  will-change: transform;
+  /* Space from bottom */
+  margin-bottom: 0.5rem;
+  touch-action: pan-y;
+}
+
+.menu-drawer-open {
+  transform: translateY(0);
+}
+
+/* Drag Handle */
+.menu-drawer-handle {
+  padding: 0.75rem 0;
+  display: flex;
+  justify-content: center;
+  cursor: grab;
+  flex-shrink: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.menu-drawer-handle:active {
+  cursor: grabbing;
+}
+
+.menu-drawer-handle-bar {
+  width: 40px;
+  height: 4px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 2px;
+  transition: background-color 0.2s ease;
+}
+
+.menu-drawer-handle:hover .menu-drawer-handle-bar {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+/* Drawer Content */
+.menu-drawer-content {
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+/* Responsive adjustments */
+@media (max-height: 600px) {
+  .menu-drawer {
+    height: 90vh;
+    max-height: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .menu-drawer {
+    left: 0.5rem;
+    right: 0.5rem;
+    border-radius: 20px 20px 0 0;
+    margin-bottom: 0.25rem;
+  }
+}
+
+

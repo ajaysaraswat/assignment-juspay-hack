@@ -1,0 +1,37 @@
+.app {
+  min-height: 100vh;
+  width: 100%;
+  position: relative;
+  background-color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.open-menu-button {
+  padding: 0.875rem 2rem;
+  background-color: #007AFF;
+  color: #ffffff;
+  border: none;
+  border-radius: 30px;
+  font-size: 1rem;
+  font-weight: 500;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.open-menu-button:hover {
+  background-color: #0056CC;
+}
+
+.open-menu-button:active {
+  background-color: #004299;
+  transform: scale(0.98);
+}
+
+.open-menu-button:focus {
+  outline: 2px solid #007AFF;
+  outline-offset: 2px;
+}

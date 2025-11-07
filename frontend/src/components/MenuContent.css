@@ -1,0 +1,97 @@
+.menu-content {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.menu-content.slide-left {
+  animation: slideLeft 0.3s ease-out;
+}
+
+.menu-content.slide-right {
+  animation: slideRight 0.3s ease-out;
+}
+
+@keyframes slideLeft {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideRight {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.menu-back-button {
+  width: 100%;
+  padding: 0.875rem 1.25rem;
+  background: rgba(0, 0, 0, 0.02);
+  border: none;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  color: #007AFF;
+  font-size: 0.9375rem;
+  text-align: left;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: background-color 0.2s ease;
+  min-height: 44px;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.menu-back-button:hover,
+.menu-back-button:focus {
+  background-color: rgba(0, 0, 0, 0.04);
+  outline: none;
+}
+
+.menu-back-button:active {
+  background-color: rgba(0, 0, 0, 0.06);
+}
+
+.menu-back-arrow {
+  font-size: 1.125rem;
+  color: #007AFF;
+}
+
+.menu-back-label {
+  font-weight: 500;
+  color: #007AFF;
+}
+
+.menu-title {
+  padding: 1.25rem 1.25rem 0.75rem;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #000000;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  margin-bottom: 0.5rem;
+}
+
+.menu-items-list {
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.menu-empty {
+  padding: 2rem 1.25rem;
+  text-align: center;
+  color: rgba(0, 0, 0, 0.5);
+  font-size: 0.9375rem;
+}
+
