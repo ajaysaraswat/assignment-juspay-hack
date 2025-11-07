@@ -14,7 +14,6 @@ function MenuDrawer({ isOpen, onClose, menuData }) {
     startY: 0,
     currentY: 0,
     dragDistance: 0,
-    initialHeight: 0,
   });
 
   const drawerRef = useRef(null);
@@ -25,17 +24,6 @@ function MenuDrawer({ isOpen, onClose, menuData }) {
     if (!isOpen) {
       setMenuHistory([]);
       setCurrentMenu(menuData);
-      // Reset height when drawer closes
-      if (drawerRef.current) {
-        drawerRef.current.style.height = '';
-        drawerRef.current.style.maxHeight = '';
-      }
-    } else {
-      // Reset height when drawer opens
-      if (drawerRef.current) {
-        drawerRef.current.style.height = '';
-        drawerRef.current.style.maxHeight = '';
-      }
     }
   }, [isOpen, menuData]);
 
@@ -92,19 +80,25 @@ function MenuDrawer({ isOpen, onClose, menuData }) {
     }
   };
 
-  // Focus management - removed auto-focus to prevent active state on Home/Back button
-  // Focus is still managed via keyboard navigation (Tab key)
+  // Focus management
+  useEffect(() => {
+    if (isOpen && drawerContentRef.current) {
+      // Focus the drawer content for accessibility
+      const firstFocusable = drawerContentRef.current.querySelector('button');
+      if (firstFocusable) {
+        firstFocusable.focus();
+      }
+    }
+  }, [isOpen, currentMenu?.id]);
 
   // Touch event handlers for drag functionality
   const handleTouchStart = (e) => {
     const touch = e.touches[0];
-    const initialHeight = drawerRef.current?.offsetHeight || 0;
     setDragState({
       isDragging: true,
       startY: touch.clientY,
       currentY: touch.clientY,
       dragDistance: 0,
-      initialHeight,
     });
   };
 
@@ -122,19 +116,21 @@ function MenuDrawer({ isOpen, onClose, menuData }) {
       dragDistance,
     }));
 
-    // Reduce height based on drag distance
-    if (drawerRef.current && dragState.initialHeight > 0) {
-      const newHeight = Math.max(0, dragState.initialHeight - dragDistance);
-      drawerRef.current.style.height = `${newHeight}px`;
-      drawerRef.current.style.maxHeight = `${newHeight}px`;
+    // Apply visual feedback during drag
+    if (drawerRef.current) {
+      drawerRef.current.style.transform = `translateY(${dragDistance}px)`;
+      // Add opacity fade as user drags
+      const opacity = Math.max(0.3, 1 - dragDistance / 300);
+      drawerRef.current.style.opacity = opacity;
     }
   };
 
   const handleTouchEnd = () => {
     if (!dragState.isDragging) return;
 
-    const currentHeight = drawerRef.current?.offsetHeight || 0;
-    const shouldClose = currentHeight < 200; // Close if height is less than 200px
+    const drawerHeight = drawerRef.current?.offsetHeight || 0;
+    const threshold = drawerHeight * 0.3; // Close if dragged more than 30% of height
+    const shouldClose = dragState.dragDistance > threshold;
 
     // Reset drag state
     setDragState({
@@ -142,32 +138,27 @@ function MenuDrawer({ isOpen, onClose, menuData }) {
       startY: 0,
       currentY: 0,
       dragDistance: 0,
-      initialHeight: 0,
     });
 
     if (shouldClose) {
-      // Reset height before closing
-      if (drawerRef.current) {
-        drawerRef.current.style.height = '';
-        drawerRef.current.style.maxHeight = '';
-      }
       onClose();
     } else {
-      // Keep the drawer at the dragged height (already set in handleTouchMove)
-      // No need to reset, it will stay at the current height
+      // Snap back to original position
+      if (drawerRef.current) {
+        drawerRef.current.style.transform = '';
+        drawerRef.current.style.opacity = '';
+      }
     }
   };
 
   // Mouse event handlers (for desktop testing)
   const handleMouseDown = (e) => {
     if (e.button !== 0) return; // Only handle left mouse button
-    const initialHeight = drawerRef.current?.offsetHeight || 0;
     setDragState({
       isDragging: true,
       startY: e.clientY,
       currentY: e.clientY,
       dragDistance: 0,
-      initialHeight,
     });
   };
 
@@ -184,38 +175,34 @@ function MenuDrawer({ isOpen, onClose, menuData }) {
       dragDistance,
     }));
 
-    // Reduce height based on drag distance
-    if (drawerRef.current && dragState.initialHeight > 0) {
-      const newHeight = Math.max(0, dragState.initialHeight - dragDistance);
-      drawerRef.current.style.height = `${newHeight}px`;
-      drawerRef.current.style.maxHeight = `${newHeight}px`;
+    if (drawerRef.current) {
+      drawerRef.current.style.transform = `translateY(${dragDistance}px)`;
+      const opacity = Math.max(0.3, 1 - dragDistance / 300);
+      drawerRef.current.style.opacity = opacity;
     }
   };
 
   const handleMouseUp = () => {
     if (!dragState.isDragging) return;
 
-    const currentHeight = drawerRef.current?.offsetHeight || 0;
-    const shouldClose = currentHeight < 200; // Close if height is less than 200px
+    const drawerHeight = drawerRef.current?.offsetHeight || 0;
+    const threshold = drawerHeight * 0.3;
+    const shouldClose = dragState.dragDistance > threshold;
 
     setDragState({
       isDragging: false,
       startY: 0,
       currentY: 0,
       dragDistance: 0,
-      initialHeight: 0,
     });
 
     if (shouldClose) {
-      // Reset height before closing
-      if (drawerRef.current) {
-        drawerRef.current.style.height = '';
-        drawerRef.current.style.maxHeight = '';
-      }
       onClose();
     } else {
-      // Keep the drawer at the dragged height (already set in handleMouseMove)
-      // No need to reset, it will stay at the current height
+      if (drawerRef.current) {
+        drawerRef.current.style.transform = '';
+        drawerRef.current.style.opacity = '';
+      }
     }
   };
 
