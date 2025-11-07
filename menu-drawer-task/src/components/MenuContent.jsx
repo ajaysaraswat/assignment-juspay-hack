@@ -9,28 +9,40 @@ import './MenuContent.css';
 function MenuContent({ currentMenu, menuHistory, onNavigate, onBack }) {
   const contentRef = useRef(null);
   const previousMenuId = useRef(null);
+  const previousHistoryLength = useRef(0);
 
   // Handle slide animations when menu changes
   useEffect(() => {
-    if (!contentRef.current || !previousMenuId.current) {
+    if (!contentRef.current) {
       previousMenuId.current = currentMenu?.id;
+      previousHistoryLength.current = menuHistory.length;
+      return;
+    }
+
+    // Skip animation on initial render
+    if (!previousMenuId.current) {
+      previousMenuId.current = currentMenu?.id;
+      previousHistoryLength.current = menuHistory.length;
       return;
     }
 
     const content = contentRef.current;
-    const isNavigatingForward = menuHistory.length > 0;
+    const isNavigatingForward = menuHistory.length > previousHistoryLength.current;
     
     // Set animation direction
+    // Forward: new menu slides in from right (100% -> 0)
+    // Backward: previous menu slides in from left (-100% -> 0)
     if (isNavigatingForward) {
-      content.classList.add('slide-left');
+      content.classList.add('slide-in-from-right');
     } else {
-      content.classList.add('slide-right');
+      content.classList.add('slide-in-from-left');
     }
 
     // Remove animation class after animation completes
     const timeout = setTimeout(() => {
-      content.classList.remove('slide-left', 'slide-right');
+      content.classList.remove('slide-in-from-right', 'slide-in-from-left');
       previousMenuId.current = currentMenu?.id;
+      previousHistoryLength.current = menuHistory.length;
     }, 300);
 
     return () => clearTimeout(timeout);
@@ -62,12 +74,6 @@ function MenuContent({ currentMenu, menuHistory, onNavigate, onBack }) {
         </button>
       )}
 
-      {/* Menu Title - Only show for nested menus, not root */}
-      {currentMenu.label && menuHistory.length > 0 && (
-        <div className="menu-title" role="heading" aria-level="2">
-          {currentMenu.label}
-        </div>
-      )}
 
       {/* Menu Items */}
       <div className="menu-items-list" role="group">
